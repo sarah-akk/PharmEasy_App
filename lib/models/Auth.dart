@@ -83,27 +83,25 @@ class Auth with ChangeNotifier{
     var url = Uri.parse('http://10.0.2.2:8000/api/register');
     try {
       final response = await http.post(url,
-          body: jsonEncode({
-             'name' : name,
-            'phone': phone,
-            'password': password,
-            'password_confirmation' : password_confirmation,
-          }),
+        body: jsonEncode({
+          'name': name,
+          'phone': phone,
+          'password': password,
+          'password_confirmation': password_confirmation,
+        }),
         headers: {'Content-Type': 'application/json'},
       );
       final Map<String, dynamic> data = json.decode(response.body);
-      print(response.body);
-      if (response.statusCode == 200 && data['message']=='user log in successfully') {
+
+      if (data['message']=='registered successfully') {
         // Successful login
-          return 'success: ${data['message']}';
-        } else {
-          // Handle login failure
-          return 'error: ${data['message']}';      }
+        return 'success: ${data['message']}';
+      } else {
+        // Handle login failure
+        return 'error: ${data['message']}';      }
 
-      }
-    catch(error){
+    } catch (error) {
       throw error;
-
     }
   }
 

@@ -36,7 +36,9 @@ class _SignState extends State<Sign> {
             duration: Duration(seconds: 2), // Adjust the duration as needed
           ),
         );
+        Navigator.of(context).pushNamed('/MobileOverviewScreen');
       }
+      
       else if (responseMessage.startsWith('error')) {
         _showErrorDialog(responseMessage);
       }

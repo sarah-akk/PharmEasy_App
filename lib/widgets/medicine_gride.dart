@@ -6,6 +6,10 @@ import '../models/medicines.dart';
 import 'medicine_item.dart';
 
 class MedicineGride extends StatefulWidget {
+
+  String searchQuery;
+  MedicineGride(this.searchQuery);
+
   @override
   _MedicineGrideState createState() => _MedicineGrideState();
 }
@@ -14,11 +18,11 @@ class _MedicineGrideState extends State<MedicineGride> {
   @override
   void initState() {
     super.initState();
-    refrechProducts(context);
+    refrechProducts(context,widget.searchQuery);
   }
 
-  Future<void> refrechProducts(BuildContext context) async {
-    await Provider.of<MedicinesList>(context, listen: false).fetchAndSetMedicines();
+  Future<void> refrechProducts(BuildContext context, String searchQuery) async {
+    await Provider.of<MedicinesList>(context, listen: false).fetchAndSetMedicines(searchQuery);
   }
 
   @override
@@ -26,8 +30,9 @@ class _MedicineGrideState extends State<MedicineGride> {
 
     final productsData = Provider.of<MedicinesList>(context);
 
+
     return RefreshIndicator(
-      onRefresh: () => refrechProducts(context),
+      onRefresh: () => refrechProducts(context,widget.searchQuery),
       child: productsData.items.isEmpty
           ? Center(child: CircularProgressIndicator())
           : Consumer<MedicinesList>(
@@ -42,7 +47,7 @@ class _MedicineGrideState extends State<MedicineGride> {
           ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 3 / 2,
+            childAspectRatio: 2 / 2,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
           ),

@@ -10,6 +10,7 @@ class MedicineItem extends StatelessWidget{
   final Medicine med;
   MedicineItem(this.med);
 
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -26,7 +27,7 @@ class MedicineItem extends StatelessWidget{
     },
     child: Image.network(
       med.imageUrl,
-    fit: BoxFit.cover,
+    fit: BoxFit.contain,
     ),
     ),
     footer: GridTileBar(

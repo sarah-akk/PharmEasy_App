@@ -31,8 +31,23 @@ class MedicinesList with ChangeNotifier {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  Future<void> fetchAndSetMedicines() async {
-    var url = Uri.parse('http://10.0.2.2:8000/api/showAll');
+  Future<void> fetchAndSetMedicines(String searchQuery) async {
+
+
+    int categoryID =0;
+    if(searchQuery=='Neurological medications')
+      categoryID=1;
+    else if(searchQuery=='Heart medications')
+      categoryID=2;
+    else if(searchQuery=='Anti-inflammatories')
+      categoryID=3;
+    else if(searchQuery=='Food supplements')
+      categoryID=4;
+    else
+      categoryID=5;
+
+
+    var url = Uri.parse('http://10.0.2.2:8000/api/medicines_category_Id/$categoryID');
     try {
       final response = await http.get(url,headers: {'Content-Type': 'application/json'},);
       Map<String, dynamic> jsonDataMap = json.decode(response.body);
@@ -43,7 +58,7 @@ class MedicinesList with ChangeNotifier {
           id: medData['id'],
           scientificName: medData['scientific_name'],
           commercialName: medData['commercial_name'],
-          category: medData['categroy'],
+          category:(medData['category_id']),
           manufacturer: medData['manufacture_company'],
           quantityAvailable: medData['available_quantity'].toDouble(),
           expiryDate: medData['expiration_date'],

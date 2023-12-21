@@ -71,7 +71,9 @@ class CategoryListView extends StatelessWidget {
                           category: categories[categoryIndex].title,
                         ),
                   ),
+
                 );
+               // print(categories[categoryIndex].title);
               }
           );
         }

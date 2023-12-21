@@ -14,11 +14,13 @@ class MedicinesScreen extends StatefulWidget {
 }
 
 class _MedicinesScreenState extends State<MedicinesScreen> {
+
   TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -98,7 +100,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
            child: SingleChildScrollView(
              child: Container(
                  height:1000,
-                 child: MedicineGride()),
+                 child: MedicineGride(widget.category)),
            ),
          ),
         ],
