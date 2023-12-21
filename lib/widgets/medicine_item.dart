@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/medicine.dart';
-import 'item_details.dart';
+import '../Screens/item_details.dart';
 
 class MedicineItem extends StatelessWidget{
 

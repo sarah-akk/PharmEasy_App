@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pharmacist_app/start_page.dart';
+import 'package:pharmacist_app/Screens/item_details.dart';
 import 'package:provider/provider.dart';
 
 import 'Screens/categories_screen.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
             StartPage.routeName:(ctx)=>StartPage(),
             MobileAuthScreen.routeName:(ctx)=>MobileAuthScreen(),
             MobileOverviewScreen.routeName:(ctx)=>MobileOverviewScreen(),
+            MedicineDetailsCard.routeName:(ctx)=>MedicineDetailsCard(),
           },
 
 

@@ -28,7 +28,7 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
     try {
       String responseMessage = await Provider.of<Auth>(context, listen: false).login(
           _phoneController.text,
-            _passwordController.text
+          _passwordController.text
         );
         if (responseMessage.startsWith('success')) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -37,17 +37,14 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
               duration: Duration(seconds: 2), // Adjust the duration as needed
             ),
           );
+          Navigator.of(context).pushNamed('/MobileOverviewScreen');
         }
-        else if (responseMessage.startsWith('error')) {
+        else if (responseMessage.startsWith('error'))  {
           _showErrorDialog(responseMessage);
         }
-      Navigator.of(context).pushNamed('/MobileOverviewScreen');
     }
     catch (error) {
-      const errorMessage =
-          'Could not authenticate you. Please try again later.';
       print(error.toString());
-      _showErrorDialog(errorMessage);
     }
 
     setState(() {

@@ -63,13 +63,13 @@ class Auth with ChangeNotifier{
         headers: {'Content-Type': 'application/json'},
       );
       print(response.body);
-      if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      if (response.statusCode == 200 && data['message']=='user log in successfully') {
         // Successful login
-        final Map<String, dynamic> data = json.decode(response.body);
         return 'success: ${data['message']}';
       } else {
         // Handle login failure
-        return 'error: ${response.reasonPhrase}';      }
+        return 'error: ${data['message']}';      }
 
     }
     catch(error){
@@ -91,14 +91,14 @@ class Auth with ChangeNotifier{
           }),
         headers: {'Content-Type': 'application/json'},
       );
+      final Map<String, dynamic> data = json.decode(response.body);
       print(response.body);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && data['message']=='user log in successfully') {
         // Successful login
-          final Map<String, dynamic> data = json.decode(response.body);
           return 'success: ${data['message']}';
         } else {
           // Handle login failure
-          return 'error: ${response.reasonPhrase}';      }
+          return 'error: ${data['message']}';      }
 
       }
     catch(error){

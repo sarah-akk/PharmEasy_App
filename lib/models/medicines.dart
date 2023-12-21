@@ -31,38 +31,32 @@ class MedicinesList with ChangeNotifier {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  Future<void> fetchAndSetMedicines([bool filterByUser = false]) async {
-    //final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
-    var url = Uri.parse(
-        'https://artful-striker-383809-default-rtdb.firebaseio.com/medicines.json?auth=$authToken');
+  Future<void> fetchAndSetMedicines() async {
+    var url = Uri.parse('http://10.0.2.2:8000/api/showAll');
     try {
-      final response = await http.get(url);
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final response = await http.get(url,headers: {'Content-Type': 'application/json'},);
+      Map<String, dynamic> jsonDataMap = json.decode(response.body);
+      List<dynamic> data = jsonDataMap['data'];
 
-      print(response.body);
-      if (extractedData == null) {
-        return;
-      }
-
-      final List<Medicine> loadedProducts = [];
-      extractedData.forEach((medId, medData) {
-        loadedProducts.add(Medicine(
-          id: id++,
+      List<Medicine> medicinesData = data.map((medData) {
+        return Medicine(
+          id: medData['id'],
           scientificName: medData['scientific_name'],
           commercialName: medData['commercial_name'],
-          category: medData['category'],
+          category: medData['categroy'],
           manufacturer: medData['manufacture_company'],
-          quantityAvailable: medData['available_quantity'],
-          expiryDate: DateTime.parse(medData['expiration_date']),
-          price: medData['price'],
+          quantityAvailable: medData['available_quantity'].toDouble(),
+          expiryDate: medData['expiration_date'],
+          price: medData['price'].toDouble(),
           imageUrl: medData['photo'],
-          isfavorate: medData['favorite'],
-        ));
-      });
+          isfavorate: medData['favorite'] == 1,
+        );
+      }).toList();
 
-      medicines = loadedProducts;
-      print(loadedProducts.length);
+      print(medicinesData.length);
+      medicines = medicinesData;
       notifyListeners();
+
     } catch (error) {
       throw (error);
     }

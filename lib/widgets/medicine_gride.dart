@@ -18,7 +18,7 @@ class _MedicineGrideState extends State<MedicineGride> {
   }
 
   Future<void> refrechProducts(BuildContext context) async {
-    await Provider.of<MedicinesList>(context, listen: false).fetchAndSetMedicines(true);
+    await Provider.of<MedicinesList>(context, listen: false).fetchAndSetMedicines();
   }
 
   @override
