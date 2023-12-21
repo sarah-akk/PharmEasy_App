@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(
             primaryColor: Colors.blueAccent,
-            accentColor: Colors.greenAccent,
+            hintColor: Colors.greenAccent,
             // Add more theme properties
           ),
           debugShowCheckedModeBanner: false,
