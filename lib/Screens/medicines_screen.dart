@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/cart.dart';
 import '../widgets/Drawer.dart';
 import '../widgets/medicine_gride.dart';
+import 'cart_screen.dart';
 import 'categories_screen.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -24,9 +27,9 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Colors.white, // Change the color to your desired color
+          color: Colors.deepPurple, // Change the color to your desired color
         ),
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         title: Align(
@@ -37,13 +40,30 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
               ('${widget.category}'),
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 20,
+                fontSize: 23,
                 fontWeight: FontWeight.w900,
               ),
             ),
           ),
         ),
+          actions: <Widget>[
+      Consumer<Cart>(
+          builder: (_, cart, ch) => Badge(
+            child: ch,
+            label: Text(cart.itemCount.toString()),
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed(CartScreen.routeName);
+            },
+          ),
+        ),
+      ]
       ),
+      /////////////////////////////////////////////////////////////////////////////////
       drawer: AppDrawer(),
       body: Column(
         children: <Widget>[

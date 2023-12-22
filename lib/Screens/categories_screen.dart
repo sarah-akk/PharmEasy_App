@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/cart.dart';
 import '../widgets/category_item.dart'; // Assuming you have a separate file for this widget
 import '../widgets/Drawer.dart';
-import 'medicines_screen.dart';
+import 'cart_screen.dart';
 
 class MobileOverviewScreen extends StatefulWidget {
   const MobileOverviewScreen({Key? key}) : super(key: key);
@@ -37,6 +39,22 @@ class _HomePageState extends State<MobileOverviewScreen> {
             ),
           ),
         ),
+          actions: <Widget>[
+            Consumer<Cart>(
+              builder: (_, cart, ch) => Badge(
+                child: ch,
+                label: Text(cart.itemCount.toString()),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.shopping_cart,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                },
+              ),
+            ),
+          ]
       ),
       drawer: AppDrawer(),
 

@@ -1,9 +1,10 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/cart.dart';
 import '../models/medicines.dart';
 import '../models/medicine.dart';
-import '../widgets/Drawer.dart';
+
 
 class MedicineDetailsCard extends StatefulWidget {
   static const routeName = '/MedicineDetailsCard';
@@ -16,6 +17,7 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
 
   bool isFavorite = false;
   int quantity = 1;
+  late Medicine loadedMedicine;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,8 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
         .of(context)!
         .settings
         .arguments as int;
-    final loadedMedicine = Provider.of<MedicinesList>(
+
+    loadedMedicine = Provider.of<MedicinesList>(
       context,
       listen: false,
     ).findById(medicineId);
@@ -37,15 +40,6 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-          ),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.greenAccent, Colors.deepPurpleAccent],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
           ),
           iconTheme: IconThemeData(
             color: Colors.white,
@@ -64,7 +58,7 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
               ),
             ),
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.lightBlueAccent,
           elevation: 0,
           centerTitle: true,
         ),
@@ -93,7 +87,7 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
     return Container(
       padding: EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 40),
           Image.network(
@@ -103,28 +97,31 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
             fit: BoxFit.contain,
           ),
           SizedBox(height: 70),
-          Text(
-            '${loadedMedicine.commercialName}',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          Row(
+            children: [
+              Text(
+                '${loadedMedicine.commercialName}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+                  ),
+                SizedBox(width: 100),
+                Text('\$${loadedMedicine.price.toString()}',
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.pink)),
+            ],
           ),
-          Divider(thickness: 2, color: Colors.pinkAccent,),
-          SizedBox(height: 20),
-          Text('Scientific Name: ${loadedMedicine.scientificName}',
-              style: TextStyle(fontSize: 18)),
-          SizedBox(height: 10),
-          Text('Category: $category', style: TextStyle(fontSize: 18)),
+          SizedBox(height: 15),
+          Text('${loadedMedicine.scientificName}',
+              style: TextStyle(fontSize: 19,color: Colors.black54)),
+          SizedBox(height: 30),
+          Text('Details : ', style: TextStyle(fontSize: 20, fontWeight:  FontWeight.bold,color: Colors.deepPurpleAccent,)),
           SizedBox(height: 10),
           Text('Manufacturer: ${loadedMedicine.manufacturer}',
-              style: TextStyle(fontSize: 18)),
+              style: TextStyle(fontSize: 18,color: Colors.black45)),
           SizedBox(height: 10),
           Text('Quantity Available: ${loadedMedicine.quantityAvailable
-              .toString()}', style: TextStyle(fontSize: 18)),
+              .toString()}', style: TextStyle(fontSize: 18,color: Colors.black45)),
           SizedBox(height: 10),
           Text('Expiry Date: ${loadedMedicine.expiryDate.toString()}',
-              style: TextStyle(fontSize: 18)),
-          SizedBox(height: 10),
-          Text('Price: \$${loadedMedicine.price.toString()}',
-              style: TextStyle(fontSize: 18)),
+              style: TextStyle(fontSize: 18,color: Colors.black45),),
           SizedBox(height: 60),
 
           /////////////////////////////////////////////////////////////////////////
@@ -164,53 +161,70 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
 
   void _showAddToCartDialog(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Add to Cart', style: TextStyle(fontSize: 20)),
-          contentPadding: EdgeInsets.all(16), // Adjust internal padding
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            // Set the size of the column based on its content
-            children: [
-              Text('Enter quantity:', style: TextStyle(fontSize: 18)),
-              SizedBox(height: 10),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                initialValue: quantity.toString(),
-                onChanged: (value) {
-                  setState(() {
-                    quantity = int.tryParse(value) ?? 1;
-                  });
+        context: context,
+        builder: (BuildContext context)
+    {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: Text('Add to Cart', style: TextStyle(fontSize: 20)),
+            contentPadding: EdgeInsets.all(16),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Enter quantity:', style: TextStyle(fontSize: 18)),
+                SizedBox(height: 10),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  initialValue: quantity.toString(),
+                  onChanged: (value) {
+                    setState(() {
+                      quantity = int.tryParse(value) ?? 1;
+                    });
+                  },
+                ),
+              ],
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  // Create a new CartItem with the specified quantity
+                  CartItem newItem = CartItem(
+                    id: DateTime.now().toString(),
+                    title: loadedMedicine.commercialName,
+                    price: loadedMedicine.price,
+                    quantity: quantity,
+                  );
+
+                  // Add the new item to the cart
+                  Provider.of<Cart>(context, listen: false).addItem(newItem);
+                  Navigator.of(context).pop(); // Close the dialog
                 },
+                child: Text('Add to Cart', style: TextStyle(fontSize: 20)),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.pinkAccent, // Set the background color
+                  // You can also customize other properties like padding, elevation, etc.
+                ),
+              ),
+
+              /////////////////////////////////////////////////////////////////////////
+
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel',
+                  style: TextStyle(fontSize: 20, color: Colors.white),),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent, // Set the background color
+                  // You can also customize other properties like padding, elevation, etc.
+                ),
               ),
             ],
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Add to cart logic here
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Add to Cart', style: TextStyle(fontSize: 20)),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.pinkAccent, // Set the background color
-                // You can also customize other properties like padding, elevation, etc.
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel', style: TextStyle(fontSize: 20)),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.yellow, // Set the background color
-                // You can also customize other properties like padding, elevation, etc.
-              ),
-            ),
-          ],
-        );
-      },
+          );
+        },
+      );
+    }
     );
   }
 }

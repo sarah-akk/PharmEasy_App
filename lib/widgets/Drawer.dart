@@ -44,7 +44,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.payment,color: Colors.white,),
             title: Text('Order', style: TextStyle(color: Colors.white,fontSize: 20)),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('/');
+              Navigator.of(context).pushReplacementNamed('/orders');
             },
           ),
           Divider(),
