@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart.dart';
+import '../models/medicines.dart';
 import '../widgets/Drawer.dart';
 import '../widgets/medicine_gride.dart';
 import 'cart_screen.dart';
@@ -8,8 +9,8 @@ import 'categories_screen.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class MedicinesScreen extends StatefulWidget {
-  final String category;
 
+  final String category;
   MedicinesScreen({required this.category});
 
   @override
@@ -19,7 +20,26 @@ class MedicinesScreen extends StatefulWidget {
 class _MedicinesScreenState extends State<MedicinesScreen> {
 
   TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
+  String searchQuery = '';
+  List<String> suggestions = [];
+
+  void initState() {
+    super.initState();
+    // Add a listener to _searchController
+    _searchController.addListener(_onSearchTextChanged);
+  }
+
+  // Listener callback
+  void _onSearchTextChanged() {
+    setState(() {
+      searchQuery = _searchController.text;
+    });
+
+    // If the search text is empty, trigger fetchAndSetMedicines
+    if (searchQuery.isEmpty) {
+      Provider.of<MedicinesList>(context, listen: false).fetchAndSetMedicines(widget.category);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +100,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                   BoxShadow(
                     color: Colors.grey,
                     offset: Offset(0, 3),
-                    blurRadius: 16,
+                    blurRadius: 10,
                   ),
                 ],
               ),
@@ -89,6 +109,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search for medicines ...',
+                    prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -99,8 +120,20 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                   ),
                 ),
                 suggestionsCallback: (pattern) async {
-                  // Return an empty list to disable suggestions
-                  return [];
+
+                  await Provider.of<MedicinesList>(context, listen: false).getSearch(pattern);
+
+                  // Get the list of suggestions from the medicines list
+                  List<String> suggestions = Provider.of<MedicinesList>(context, listen: false)
+                      .medicines
+                      ?.where((medicine) =>
+                      medicine.commercialName
+                          .toLowerCase()
+                          .startsWith(pattern.toLowerCase()))
+                      ?.map((medicine) => medicine.commercialName)
+                      ?.toList() ?? [];
+
+                  return suggestions;
                 },
                 itemBuilder: (context, suggestion) {
                   return ListTile(
@@ -110,8 +143,9 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                 onSuggestionSelected: (suggestion) {
                   // Handle the selection of a suggestion
                   setState(() {
-                    _searchQuery = suggestion;
+                    searchQuery = suggestion;
                   });
+                  _searchController.text = suggestion;
                 },
               ),
             ),
@@ -120,11 +154,13 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
            child: SingleChildScrollView(
              child: Container(
                  height:1000,
-                 child: MedicineGride(widget.category)),
+                 child: MedicineGride(widget.category,searchQuery)
+             ),
            ),
          ),
         ],
       ),
     );
   }
+
 }

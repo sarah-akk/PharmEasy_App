@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/Auth.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -31,12 +34,20 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20,),
-          Divider(),
+          Divider(color: Colors.white70,),
           ListTile(
             leading: Icon(Icons.medical_information,color: Colors.white,),
             title: Text('Medicines',style: TextStyle(color: Colors.white,fontSize: 20)),
             onTap: (){
               Navigator.of(context).pushReplacementNamed('/MobileOverviewScreen');
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.favorite,color: Colors.white,),
+            title: Text('favorites', style: TextStyle(color: Colors.white,fontSize: 20)),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/favorites');
             },
           ),
           Divider(),
@@ -51,7 +62,9 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app,color: Colors.white,),
             title: Text('LogOut', style: TextStyle(color: Colors.white,fontSize: 20)),
+
             onTap: (){
+              Provider.of<Auth>(context,listen: false).logoutUser();
               Navigator.of(context).pushReplacementNamed('/StartPage');
             },
           ),

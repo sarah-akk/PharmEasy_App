@@ -13,14 +13,51 @@ class MedicineDetailsCard extends StatefulWidget {
   State<MedicineDetailsCard> createState() => _MedicineDetailsCardState();
 }
 
-class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
+class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
 
-  bool isFavorite = false;
+  late bool isFavorite = false ;
   int quantity = 1;
   late Medicine loadedMedicine;
+  var is_init=true;
+
+
+  @override
+  Future<void> didChangeDependencies() async {
+    if (is_init) {
+      try {
+        final medicineId = ModalRoute
+            .of(context)!
+            .settings
+            .arguments as int;
+        loadedMedicine =
+            Provider.of<MedicinesList>(context, listen: false).findById(
+                medicineId);
+
+        bool result = await Provider.of<MedicinesList>(context, listen: false)
+            .isMedicineFavorite(loadedMedicine.id);
+
+        setState(() {
+          isFavorite = result;
+          print(isFavorite);
+        });
+      } catch (error) {
+        // Handle errors if needed
+      }
+      is_init = false;
+
+      super.didChangeDependencies();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState executed');
+  }
 
   @override
   Widget build(BuildContext context) {
+
     final medicineId = ModalRoute
         .of(context)!
         .settings
@@ -31,7 +68,9 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
       listen: false,
     ).findById(medicineId);
 
-    return Scaffold(
+
+
+      return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(120.0), // Set your desired height
         child: AppBar(
@@ -130,10 +169,33 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                onPressed: () {
-                  setState(() {
+                onPressed: () async {
+                   setState(() {
                     isFavorite = !isFavorite;
                   });
+
+                  try {
+                    bool result;
+                    if (isFavorite) {
+                      // Call the API to favorite the medicine
+                      result = await Provider.of<MedicinesList>(context, listen: false)
+                          .favoriteMedicine(loadedMedicine.id);
+                    } else {
+                      // Call the API to unfavorite the medicine
+                      result = await Provider.of<MedicinesList>(context, listen: false)
+                          .unfavoriteMedicine(loadedMedicine.id);
+                    }
+                      setState(() {
+                        isFavorite = result;
+                        print(isFavorite);
+                      });
+
+                  } catch (error) {
+
+                    setState(() {
+                      isFavorite = !isFavorite;
+                    });
+                  }
                 },
                 icon: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -158,6 +220,8 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
       ),
     );
   }
+
+/////////////////////////////////////////////////////////////////////////////
 
   void _showAddToCartDialog(BuildContext context) {
     showDialog(
@@ -193,7 +257,7 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard> {
                     id: DateTime.now().toString(),
                     title: loadedMedicine.commercialName,
                     price: loadedMedicine.price,
-                    quantity: quantity,
+                    quantity: quantity.toDouble(),
                   );
 
                   // Add the new item to the cart

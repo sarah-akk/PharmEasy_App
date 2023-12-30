@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class CartItem {
   final String id;
   final String title;
-  final int quantity;
+  final double quantity;
   final double price;
 
   CartItem({

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'Screens/cart_screen.dart';
 import 'Screens/categories_screen.dart';
+import 'Screens/favorites_screen.dart';
 import 'Screens/login.dart';
 import 'Screens/orders_screen.dart';
 import 'models/Auth.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
             MedicineDetailsCard.routeName:(ctx)=>MedicineDetailsCard(),
             CartScreen.routeName: (ctx) => CartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),
+            FavoritesScreen.routeName:(ctx)=>FavoritesScreen(),
           },
 
 

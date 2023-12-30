@@ -11,7 +11,7 @@ class Medicine with ChangeNotifier {
   final String expiryDate;
   final double price;
   final String imageUrl;
-  final bool isfavorate;
+   bool isfavorate = false;
 
   Medicine({
 
@@ -26,4 +26,10 @@ class Medicine with ChangeNotifier {
     required this.imageUrl,
     required this.isfavorate,
   });
+
+  Future<void>  toggleFavoriteStatus() async {
+    final olsStatus = isfavorate;
+    isfavorate = !isfavorate;
+    notifyListeners();
+  }
 }

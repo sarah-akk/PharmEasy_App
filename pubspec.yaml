@@ -74,6 +74,7 @@ flutter:
     - assets/images/Heart medications.jpg
     - assets/images/Neurological medications.jpg
     - assets/images/Painkillers.jpg
+    - assets/images/no-product-available-hd-png-download.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
