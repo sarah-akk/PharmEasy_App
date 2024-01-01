@@ -14,8 +14,6 @@ class MedicineItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    final medicine = Provider.of<Medicine>(context, listen: false);
-
     return ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: GridTile(
@@ -31,10 +29,11 @@ class MedicineItem extends StatelessWidget{
     ),
     ),
     footer: GridTileBar(
-    backgroundColor: Colors.lightBlueAccent,
+    backgroundColor: Colors.deepPurpleAccent.shade100,
     title: Text(
       med.commercialName,
     textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),
     ),
     ),
     ),

@@ -18,8 +18,6 @@ class MedicinesList with ChangeNotifier {
     return [..._favoriteMedicines];
   }
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
   final String? authToken;
   final String? userId;
@@ -30,13 +28,17 @@ class MedicinesList with ChangeNotifier {
 
   notifyListeners();
 
-  List<Medicine> get items {
-    return [...medicines];
-  }
+    List<Medicine> get items {
+      return [...medicines];
+    }
 
-  Medicine findById(int id) {
-    return items.firstWhere((prod) => prod.id == id);
-  }
+    Medicine findById(int id) {
+      return items.firstWhere((prod) => prod.id == id);
+    }
+
+    Medicine findFavById(int id) {
+      return favoriteMedicines.firstWhere((prod) => prod.id == id);
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

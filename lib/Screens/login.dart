@@ -133,90 +133,87 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
                             )),
                         SizedBox(height: 20.0,),
 
+
                         Container(
                           width: width,
                           child: ElevatedButton(
-                            onPressed: (){
+                            onPressed: () {
                               _submit();
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepPurpleAccent,
-                                padding: EdgeInsets.symmetric(vertical: 15.0),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(40),
-                                        bottomRight: Radius.circular(40.0)
-                                    )
-                                )
+                              backgroundColor: Colors.deepPurpleAccent,
+                              padding: EdgeInsets.symmetric(vertical: 15.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(40),
+                                  bottomRight: Radius.circular(40.0),
+                                ),
+                              ),
                             ),
-                            child:Text('Login'),
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
 
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 30.0,horizontal: 20.0),
+                          margin: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
                           child: Row(
                             children: [
-                              Expanded(child: Divider(indent: 1.0,color: Colors.black38,)),
+                              Expanded(child: Divider(indent: 1.0, color: Colors.black38)),
                               Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 15.0),
-                                  child: Text('OR')),
-                              Expanded(child: Divider(indent: 1.0,color: Colors.black38,)),
+                                margin: EdgeInsets.symmetric(horizontal: 15.0),
+                                child: Text('OR'),
+                              ),
+                              Expanded(child: Divider(indent: 1.0, color: Colors.black38)),
                             ],
                           ),
                         ),
+
                         Row(
                           children: [
                             Text('Do create your account ?'),
-                            SizedBox(width: 5.0,),
+                            SizedBox(width: 5.0),
                             InkWell(
-                              onTap: ()=>Navigator.push(context,
-                                  MaterialPageRoute(builder: (context)=>Sign())
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Sign())),
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                  color: Colors.deepPurpleAccent,
+                                ),
                               ),
-                              child: Text('Register',style: TextStyle(
-                                color: Colors.deepPurpleAccent,
-                              ),),
                             ),
                           ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: 15.0,
-                    left: 0,
-                    right: 0,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Login',
-                              style: TextStyle(
-                                color: Colors.deepPurpleAccent,
-                              ),
-                            )
-                          ],
                         ),
-                        SizedBox(
-                          height: 4.0,
-                        ),
-                        Container(
-                          width: width,
-                          height: 2.0,
-                          color: Colors.deepPurpleAccent,
-                        )
                       ],
-                    ),
-                  )
-                ],
               ),
             ),
-          )),
+
+
+        // Circular Progress Indicator
+        Visibility(
+          visible: _isLoading,
+          child: Positioned(
+            bottom: 20.0,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ),
+        ],
+      ),
+    ),
+        ),
+      )
     );
   }
-
   TextField buildTextFieldPass({txt, icon}) {
     return TextField(
       controller: _passwordController,
@@ -224,6 +221,7 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
       decoration: InputDecoration(
           prefixIcon: icon,
           hintText: txt,
+          hintStyle: TextStyle(color: Colors.black45), // Set the hint text color her
           suffixIcon: Icon(Icons.remove_red_eye_outlined),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40.0),
@@ -240,6 +238,7 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
       decoration: InputDecoration(
           prefixIcon: icon,
           hintText: txt,
+          hintStyle: TextStyle(color: Colors.black45), // Set the hint text color her
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40.0),
           ),

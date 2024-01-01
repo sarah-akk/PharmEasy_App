@@ -23,13 +23,14 @@
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text('\$${widget.order.amount}'),
+              title: Text('total price : \$${widget.order.amount}'),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.order.dateTime),
+                  Text('date : $widget.order.dateTime'),
                   Text('Status: ${widget.order.status}'),
-                  Text('Payment Status: ${widget.order.paymentStatus ? 'Paid' : 'Unpaid'}'),
+                  Text('Payment Status: ${widget.order.paymentStatus ? 'Paid' : 'Unpaid'}',
+                    style: TextStyle(color: widget.order.paymentStatus ? Colors.green:Colors.red),),
                 ],
               ),
               trailing: IconButton(

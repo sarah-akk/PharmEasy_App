@@ -161,7 +161,7 @@ class _SignState extends State<Sign> {
                                     )
                                 )
                             ),
-                            child:Text('Sign Up'),
+                            child:Text('Sign Up',style : TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.bold)),
                           ),
                         ),
 
@@ -216,6 +216,7 @@ class _SignState extends State<Sign> {
       decoration: InputDecoration(
           prefixIcon: icon,
           hintText: txt,
+          hintStyle: TextStyle(color: Colors.black45), // Set the hint text color her
           suffixIcon: Icon(Icons.remove_red_eye_outlined),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40.0),
@@ -232,6 +233,7 @@ class _SignState extends State<Sign> {
       decoration: InputDecoration(
           prefixIcon: icon,
           hintText: txt,
+          hintStyle: TextStyle(color: Colors.black45), // Set the hint text color her
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40.0),
           ),
@@ -247,6 +249,7 @@ TextField buildTextFieldname({txt, icon}) {
     decoration: InputDecoration(
         prefixIcon: icon,
         hintText: txt,
+        hintStyle: TextStyle(color: Colors.black45), // Set the hint text color her
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(40.0),
         ),
@@ -261,6 +264,7 @@ TextField buildTextFieldname({txt, icon}) {
       decoration: InputDecoration(
           prefixIcon: icon,
           hintText: txt,
+          hintStyle: TextStyle(color: Colors.black45), // Set the hint text color her
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40.0),
           ),

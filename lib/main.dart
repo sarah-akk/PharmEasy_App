@@ -4,6 +4,7 @@ import 'package:pharmacist_app/start_page.dart';
 import 'package:pharmacist_app/Screens/item_details.dart';
 import 'package:provider/provider.dart';
 
+import 'Screens/Fav_Medicine_Details_Card.dart';
 import 'Screens/cart_screen.dart';
 import 'Screens/categories_screen.dart';
 import 'Screens/favorites_screen.dart';
@@ -66,12 +67,11 @@ class MyApp extends StatelessWidget {
             MobileAuthScreen.routeName:(ctx)=>MobileAuthScreen(),
             MobileOverviewScreen.routeName:(ctx)=>MobileOverviewScreen(),
             MedicineDetailsCard.routeName:(ctx)=>MedicineDetailsCard(),
+            FavMedicineDetailsCard.routeName:(ctx)=>FavMedicineDetailsCard(),
             CartScreen.routeName: (ctx) => CartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),
             FavoritesScreen.routeName:(ctx)=>FavoritesScreen(),
           },
-
-
 
         )
     );

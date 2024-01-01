@@ -6,14 +6,14 @@ import '../models/medicines.dart';
 import '../models/medicine.dart';
 
 
-class MedicineDetailsCard extends StatefulWidget {
-  static const routeName = '/MedicineDetailsCard';
+class FavMedicineDetailsCard extends StatefulWidget {
+  static const routeName = '/FavMedicineDetailsCard';
 
   @override
-  State<MedicineDetailsCard> createState() => _MedicineDetailsCardState();
+  State<FavMedicineDetailsCard> createState() => _MedicineDetailsCardState();
 }
 
-class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
+class _MedicineDetailsCardState extends State<FavMedicineDetailsCard>{
 
   late bool isFavorite = false ;
   int quantity = 1;
@@ -31,7 +31,7 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
             .arguments as int;
 
         loadedMedicine =
-            Provider.of<MedicinesList>(context, listen: false).findById(
+            Provider.of<MedicinesList>(context, listen: false).findFavById(
                 medicineId);
 
         bool result = await Provider.of<MedicinesList>(context, listen: false)
@@ -68,10 +68,10 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
     loadedMedicine = Provider.of<MedicinesList>(
       context,
       listen: false,
-    ).findById(medicineId);
+    ).findFavById(medicineId);
 
 
-      return Scaffold(
+    return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(120.0), // Set your desired height
         child: AppBar(
@@ -142,9 +142,9 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
               Text(
                 '${loadedMedicine.commercialName}',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-                  ),
-                SizedBox(width: 130),
-                Text('\$${loadedMedicine.price.toString()}',
+              ),
+              SizedBox(width: 130),
+              Text('\$${loadedMedicine.price.toString()}',
                   style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.pink)),
             ],
           ),
@@ -161,7 +161,7 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
               .toString()}', style: TextStyle(fontSize: 18,color: Colors.black45)),
           SizedBox(height: 10),
           Text('Expiry Date: ${loadedMedicine.expiryDate.toString()}',
-              style: TextStyle(fontSize: 18,color: Colors.black45),),
+            style: TextStyle(fontSize: 18,color: Colors.black45),),
           SizedBox(height: 60),
 
           /////////////////////////////////////////////////////////////////////////
@@ -171,7 +171,7 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
             children: [
               IconButton(
                 onPressed: () async {
-                   setState(() {
+                  setState(() {
                     isFavorite = !isFavorite;
                   });
 
@@ -186,10 +186,10 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
                       result = await Provider.of<MedicinesList>(context, listen: false)
                           .unfavoriteMedicine(loadedMedicine.id);
                     }
-                      setState(() {
-                        isFavorite = result;
-                        print(isFavorite);
-                      });
+                    setState(() {
+                      isFavorite = result;
+                      print(isFavorite);
+                    });
 
                   } catch (error) {
 
@@ -228,68 +228,68 @@ class _MedicineDetailsCardState extends State<MedicineDetailsCard>{
     showDialog(
         context: context,
         builder: (BuildContext context)
-    {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return AlertDialog(
-            title: Text('Add to Cart', style: TextStyle(fontSize: 20)),
-            contentPadding: EdgeInsets.all(16),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Enter quantity:', style: TextStyle(fontSize: 18)),
-                SizedBox(height: 10),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  initialValue: quantity.toString(),
-                  onChanged: (value) {
-                    setState(() {
-                      quantity = int.tryParse(value) ?? 1;
-                    });
-                  },
+        {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Text('Add to Cart', style: TextStyle(fontSize: 20)),
+                contentPadding: EdgeInsets.all(16),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Enter quantity:', style: TextStyle(fontSize: 18)),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      initialValue: quantity.toString(),
+                      onChanged: (value) {
+                        setState(() {
+                          quantity = int.tryParse(value) ?? 1;
+                        });
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  // Create a new CartItem with the specified quantity
-                  CartItem newItem = CartItem(
-                    id: DateTime.now().toString(),
-                    title: loadedMedicine.commercialName,
-                    price: loadedMedicine.price,
-                    quantity: quantity.toDouble(),
-                  );
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Create a new CartItem with the specified quantity
+                      CartItem newItem = CartItem(
+                        id: DateTime.now().toString(),
+                        title: loadedMedicine.commercialName,
+                        price: loadedMedicine.price,
+                        quantity: quantity.toDouble(),
+                      );
 
-                  // Add the new item to the cart
-                  Provider.of<Cart>(context, listen: false).addItem(newItem);
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text('Add to Cart', style:TextStyle(fontSize: 20,color: Colors.white70)),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.pinkAccent, // Set the background color
-                  // You can also customize other properties like padding, elevation, etc.
-                ),
-              ),
+                      // Add the new item to the cart
+                      Provider.of<Cart>(context, listen: false).addItem(newItem);
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Add to Cart', style:TextStyle(fontSize: 20,color: Colors.white70)),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.pinkAccent, // Set the background color
+                      // You can also customize other properties like padding, elevation, etc.
+                    ),
+                  ),
 
-              /////////////////////////////////////////////////////////////////////////
+                  /////////////////////////////////////////////////////////////////////////
 
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text('Cancel',
-                  style: TextStyle(fontSize: 20, color: Colors.white),),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blueAccent, // Set the background color
-                  // You can also customize other properties like padding, elevation, etc.
-                ),
-              ),
-            ],
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Cancel',
+                      style: TextStyle(fontSize: 20, color: Colors.white),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blueAccent, // Set the background color
+                      // You can also customize other properties like padding, elevation, etc.
+                    ),
+                  ),
+                ],
+              );
+            },
           );
-        },
-      );
-    }
+        }
     );
   }
 }
