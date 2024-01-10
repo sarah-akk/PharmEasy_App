@@ -27,6 +27,7 @@ class Medicine with ChangeNotifier {
     required this.isfavorate,
   });
 
+
   Future<void>  toggleFavoriteStatus() async {
     final olsStatus = isfavorate;
     isfavorate = !isfavorate;
