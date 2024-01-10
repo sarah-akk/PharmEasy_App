@@ -26,34 +26,6 @@ class Auth with ChangeNotifier{
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  // Future<void> logintoAdmin(String? PhoneNumber,String? passowrd,String? urlSegment )async{
-  //   var url = Uri.parse(
-  //       'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyAHN6mVcn_YLp_j7dzeGr5SgqRtrdiFAIg');
-  //   try {final response =  await http.post(url,body: jsonEncode({
-  //     'email':PhoneNumber,
-  //     'password':passowrd,
-  //     'returnSecureToken' :true,})
-  //   );
-  //   final responseData = json.decode(response.body);
-  //
-  //   token = responseData['idToken'];
-  //   userId = responseData['localId'];
-  //   expireyDate= DateTime.now().add(Duration(
-  //     seconds:int.parse( responseData['expiresIn']),),);
-  //   autoLogOut();
-  //   notify*\\\\\\\\\\\\\\\\\\\\\\\\\\00000000000000000000000000000000000000000000000000000000000000000000000000000000Listeners();
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final userData = json.encode({'token':token,'userId':userId,'expirydate':expireyDate!.toIso8601String()});
-  //   prefs.setString('userData', userData);
-  //   }
-  //
-  //   catch(error){
-  //     throw error;
-  //
-  //   }
-  //
-  // }
-
   Future<String> loginUser(String? phone,String? password)async{
 
     var url = Uri.parse('http://10.0.2.2:8000/api/login');

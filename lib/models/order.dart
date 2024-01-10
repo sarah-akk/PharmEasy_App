@@ -38,6 +38,8 @@ import 'cart.dart';
       return products.fold(0.0, (sum, product) => sum + (product.quantity * product.price));
     }
 
+
+
     ////////////////////////////////////////////////////////////////////////////////////////
 
 

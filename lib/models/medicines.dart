@@ -215,6 +215,8 @@ class MedicinesList with ChangeNotifier {
     return false;
   }
 
+  //////////////////////////////////////////////////////////////////////////////////
+
   Future<bool> unfavoriteMedicine(int medicineId) async {
     try {
       final response = await http.get(
@@ -238,6 +240,7 @@ class MedicinesList with ChangeNotifier {
     return true;
   }
 
+////////////////////////////////////////////////////////////////////////////////
 
   Future<bool> isMedicineFavorite(int medicineId) async {
     try {
